@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -22,8 +25,11 @@ public class Tutor {
     private String company;
     @Column(nullable = false)
     private String phoneNumber;
-    @Column(nullable = false)
+    @Column(columnDefinition = "text")
     private String description;
+
+//    @OneToMany(mappedBy = "tutor")
+//    List<Lecture> lectures = new ArrayList<>();
 
     public Tutor(TutorRequestDto requestDto) {
         this.name = requestDto.getName();
