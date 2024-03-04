@@ -1,5 +1,6 @@
 package com.sparta.springlv3.service;
 
+import com.sparta.springlv3.dto.LectureResponseDto;
 import com.sparta.springlv3.dto.TutorRequestDto;
 import com.sparta.springlv3.dto.TutorResponseDto;
 import com.sparta.springlv3.entity.Lecture;
@@ -50,15 +51,25 @@ public class TutorService {
         return tutor.of();
     }
 
-    public List<Lecture> findByTutor(Long tutorId) {
+    public List<LectureResponseDto> findByTutor(Long tutorId) {
         Tutor tutor = tutorRepository.findById(tutorId).orElseThrow(
                 () -> new IllegalArgumentException("강사 정보가 존재하지 않습니다.")
         );
 
         try {
-            return lectureRepository.findAllByTutor(tutor).stream().sorted(Comparator.comparing(Lecture::getRegisteredAt).reversed()).collect(Collectors.toList());
+            return tutor.getLectures().stream().sorted(Comparator.comparing(Lecture::getRegisteredAt).reversed()).map(LectureResponseDto::new).toList();
         } catch (Exception e) {
             throw new NullPointerException(e.toString());
         }
+    }
+
+    @Transactional
+    public void delete(Long tutorId) {
+        Tutor tutor = tutorRepository.findById(tutorId).orElseThrow(
+                () -> new IllegalArgumentException("강사 정보가 존재하지 않습니다.")
+        );
+
+        lectureRepository.deleteByTutorId(tutorId);
+        tutorRepository.deleteById(tutorId);
     }
 }

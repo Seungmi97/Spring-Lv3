@@ -10,4 +10,5 @@ import java.util.List;
 public interface LectureRepository extends JpaRepository<Lecture, Long> {
     List<Lecture> findAllByTutor(Tutor tutor);
     List<Lecture> findAllByCategory(LectureCategory category);
+    void deleteByTutorId(Long tutorId);
 }

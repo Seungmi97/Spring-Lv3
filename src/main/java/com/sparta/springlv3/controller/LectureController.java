@@ -43,7 +43,15 @@ public class LectureController {
     }
 
     @GetMapping("/lecture")
-    public List<Lecture> category(@RequestParam("category") LectureCategory category) {
+    public List<LectureResponseDto> category(@RequestParam("category") LectureCategory category) {
         return lectureService.findByCategory(category);
+    }
+
+    @DeleteMapping("/lecture/{lectureId}")
+    public void delete(@PathVariable Long lectureId, HttpServletRequest req) {
+        User user = (User) req.getAttribute("user");
+        if (user.getRole().equals(UserRoleEnum.MANAGER)) {
+            lectureService.delete(lectureId);
+        } else throw new IllegalArgumentException("권한이 없습니다.");
     }
 }

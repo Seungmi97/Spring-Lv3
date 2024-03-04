@@ -28,8 +28,8 @@ public class Tutor {
     @Column(columnDefinition = "text")
     private String description;
 
-//    @OneToMany(mappedBy = "tutor")
-//    List<Lecture> lectures = new ArrayList<>();
+    @OneToMany(mappedBy = "tutor")
+    List<Lecture> lectures = new ArrayList<>();
 
     public Tutor(TutorRequestDto requestDto) {
         this.name = requestDto.getName();

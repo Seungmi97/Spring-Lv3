@@ -1,5 +1,6 @@
 package com.sparta.springlv3.controller;
 
+import com.sparta.springlv3.dto.LectureResponseDto;
 import com.sparta.springlv3.dto.TutorRequestDto;
 import com.sparta.springlv3.dto.TutorResponseDto;
 import com.sparta.springlv3.entity.Lecture;
@@ -40,7 +41,15 @@ public class TutorController {
     }
 
     @GetMapping("/tutor/{tutorId}/lecture")
-    public List<Lecture> findByTutor(@PathVariable Long tutorId) {
+    public List<LectureResponseDto> findByTutor(@PathVariable Long tutorId) {
         return tutorService.findByTutor(tutorId);
+    }
+
+    @DeleteMapping("/tutor/{tutorId}")
+    public void delete(@PathVariable Long tutorId, HttpServletRequest req) {
+        User user = (User) req.getAttribute("user");
+        if (user.getRole().equals(UserRoleEnum.MANAGER)) {
+            tutorService.delete(tutorId);
+        } else throw new IllegalArgumentException("권한이 없습니다.");
     }
 }

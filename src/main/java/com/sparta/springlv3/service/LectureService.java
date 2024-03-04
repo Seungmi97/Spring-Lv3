@@ -54,11 +54,19 @@ public class LectureService {
         return lecture.of();
     }
 
-    public List<Lecture> findByCategory(LectureCategory category) {
+    public List<LectureResponseDto> findByCategory(LectureCategory category) {
         try {
-            return lectureRepository.findAllByCategory(category).stream().sorted(Comparator.comparing(Lecture::getRegisteredAt).reversed()).collect(Collectors.toList());
+            return lectureRepository.findAllByCategory(category).stream().sorted(Comparator.comparing(Lecture::getRegisteredAt).reversed()).map(LectureResponseDto::new).toList();
         } catch (Exception e) {
             throw new NullPointerException(e.toString());
         }
+    }
+
+    public void delete(Long lectureId) {
+        Lecture lecture = lectureRepository.findById(lectureId).orElseThrow(
+                () -> new IllegalArgumentException("강의 정보가 존재하지 않습니다.")
+        );
+
+        lectureRepository.delete(lecture);
     }
 }
