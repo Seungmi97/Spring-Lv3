@@ -56,7 +56,7 @@ public class TutorService {
         );
 
         try {
-            return lectureRepository.findByTutor(tutor).stream().sorted(Comparator.comparing(Lecture::getRegisteredAt).reversed()).collect(Collectors.toList());
+            return lectureRepository.findAllByTutor(tutor).stream().sorted(Comparator.comparing(Lecture::getRegisteredAt).reversed()).collect(Collectors.toList());
         } catch (Exception e) {
             throw new NullPointerException(e.toString());
         }

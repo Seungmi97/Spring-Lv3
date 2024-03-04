@@ -4,11 +4,15 @@ import com.sparta.springlv3.dto.LectureRequestDto;
 import com.sparta.springlv3.dto.LectureResponseDto;
 import com.sparta.springlv3.dto.TutorRequestDto;
 import com.sparta.springlv3.dto.TutorResponseDto;
+import com.sparta.springlv3.entity.Lecture;
+import com.sparta.springlv3.entity.LectureCategory;
 import com.sparta.springlv3.entity.User;
 import com.sparta.springlv3.entity.UserRoleEnum;
 import com.sparta.springlv3.service.LectureService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -36,5 +40,10 @@ public class LectureController {
     @GetMapping("/lecture/{lectureId}")
     public LectureResponseDto find(@PathVariable Long lectureId) {
         return lectureService.find(lectureId);
+    }
+
+    @GetMapping("/lecture")
+    public List<Lecture> category(@RequestParam("category") LectureCategory category) {
+        return lectureService.findByCategory(category);
     }
 }

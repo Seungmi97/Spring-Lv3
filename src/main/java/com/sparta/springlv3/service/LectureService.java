@@ -5,11 +5,16 @@ import com.sparta.springlv3.dto.LectureResponseDto;
 import com.sparta.springlv3.dto.TutorRequestDto;
 import com.sparta.springlv3.dto.TutorResponseDto;
 import com.sparta.springlv3.entity.Lecture;
+import com.sparta.springlv3.entity.LectureCategory;
 import com.sparta.springlv3.entity.Tutor;
 import com.sparta.springlv3.repository.LectureRepository;
 import com.sparta.springlv3.repository.TutorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LectureService {
@@ -47,5 +52,13 @@ public class LectureService {
         );
 
         return lecture.of();
+    }
+
+    public List<Lecture> findByCategory(LectureCategory category) {
+        try {
+            return lectureRepository.findAllByCategory(category).stream().sorted(Comparator.comparing(Lecture::getRegisteredAt).reversed()).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new NullPointerException(e.toString());
+        }
     }
 }
